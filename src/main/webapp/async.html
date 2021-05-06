@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>async</title>
+  <script>
+    function asyncUpdate() {
+      var xhr;
+      if (window.XMLHttpRequest) {
+        xhr = new XMLHttpRequest();
+      } else if (window.ActiveXObject) {
+        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+      }
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            document.getElementById("data").innerHTML = xhr.responseText;
+            asyncUpdate();
+          }
+        }
+      };
+      xhr.open('GET', 'asyncNum.do?timestamp=' + new Date().getTime());
+      xhr.send();
+    }
+    window.onload = asyncUpdate;
+  </script>
+</head>
+<body>
+<div class="container">
+  <label>实时资料：</label> <span id="data"></span>
+</div>
+</body>
+</html>
